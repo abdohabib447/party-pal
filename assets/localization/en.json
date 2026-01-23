@@ -1,0 +1,19 @@
+{
+  "welcome_back": "Welcome Back!",
+  "sign_in_continue": "Please sign in to continue",
+  "email": "Email",
+  "password": "Password",
+  "sign_in": "Sign In",
+  "forgot_password": "Forgot password?",
+  "no_account": "Don't have an account?",
+  "sign_up": "Sign Up",
+  "create_account": "Create an Account",
+  "join_moments": "Join to cherish the little moments",
+  "full_name": "Full Name",
+  "confirm_password": "Confirm Password",
+  "already_have": "Already have an account?",
+  "forgot_title": "Forgot Password?",
+  "forgot_desc": "No worries, we'll send you reset instructions.",
+  "reset_password": "Reset Password",
+  "remember_password": "Remember your password?"
+}
