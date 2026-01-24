@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:party_pal2/peresentation/pages/home_page.dart';
 import 'package:party_pal2/peresentation/pages/sign_up_page.dart';
 import '../../core/constants/theme/app_localizations.dart';
 import '../bloc/auth_bloc.dart';
@@ -111,6 +112,7 @@ class SignInPage extends StatelessWidget {
                             return ElevatedButton(
                               onPressed: () {
                                 context.read<AuthBloc>().add(LoginPressed());
+                                Navigator.pushNamed(context, HomePage.routeName);
                               },
                               style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(

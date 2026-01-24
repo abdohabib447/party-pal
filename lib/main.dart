@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:party_pal2/peresentation/bloc/auth_bloc.dart';
 import 'package:party_pal2/peresentation/pages/forgot_password_page.dart';
+import 'package:party_pal2/peresentation/pages/home_page.dart';
+import 'package:party_pal2/peresentation/pages/profile_page.dart';
 import 'package:party_pal2/peresentation/pages/sign_in_page.dart';
 import 'package:party_pal2/peresentation/pages/sign_up_page.dart';
 import 'core/constants/theme/app_localizations.dart';
@@ -50,7 +52,9 @@ class MyApp extends StatelessWidget {
         routes: {
           SignInPage.routeName : (context) => SignInPage(),
           SignUpPage.routeName : (context)=> SignUpPage(),
-          ForgetPassWord.routeName : (context)=>ForgetPassWord()
+          ForgetPassWord.routeName : (context)=>ForgetPassWord(),
+          ProfilePage.routeName : (context)=>ProfilePage(),
+          HomePage.routeName : (context) => HomePage()
         },
       ),
     );
