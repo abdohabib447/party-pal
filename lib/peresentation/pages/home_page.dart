@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/constants/theme/app_color.dart';
 import '../../core/constants/theme/app_font.dart';
 import '../../core/constants/theme/post_data.dart';
