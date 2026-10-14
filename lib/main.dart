@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
           SignUpPage.routeName : (context)=> SignUpPage(),
           ForgetPassWord.routeName : (context)=>ForgetPassWord(),
           DesignerProfilePage.routeName : (context)=>DesignerProfilePage(),
-          HomePage.routeName : (context) => HomePage(),
+          PartyPalHomeScreen.routeName : (context) => PartyPalHomeScreen(),
           DesignersPage.routeName : (context) => DesignersPage()
         },
       ),

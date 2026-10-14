@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:party_pal2/peresentation/widget/rate.dart';
+import 'package:party_pal2/core/widgets/rate.dart';
 
 class ProfileHeader extends StatelessWidget {
   @override

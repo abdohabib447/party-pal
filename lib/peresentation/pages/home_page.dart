@@ -1,217 +1,170 @@
-import 'package:animate_do/animate_do.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:party_pal2/peresentation/bloc/home_bloc.dart';
-import 'package:party_pal2/peresentation/pages/designers_page.dart';
-import 'package:party_pal2/peresentation/widget/event_card.dart';
-import 'package:party_pal2/peresentation/widget/party_assistant.dart';
-import 'package:party_pal2/peresentation/widget/recent_posts.dart';
-import 'package:party_pal2/peresentation/widget/upcoming_events.dart';
+import '../../core/constants/theme/app_color.dart';
+import '../../core/constants/theme/app_font.dart';
+import '../../core/constants/theme/post_data.dart';
+import '../../core/widgets/category_button.dart';
+import '../../core/widgets/party_post_card.dart';
 
-class HomePage extends StatelessWidget {
-  static const String routeName = "home_page";
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => HomeBloc()..add(LoadHomeData()),
-      child: const _HomeView(),
-    );
-  }
-}
-
-class _HomeView extends StatefulWidget {
-  const _HomeView();
-
-  @override
-  State<_HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<_HomeView>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+class PartyPalHomeScreen extends StatelessWidget {
+  const PartyPalHomeScreen({Key? key}) : super(key: key);
+  static const routeName = "home screen";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8EE),
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              expandedHeight: 100,
-              floating: true,
-              pinned: true,
-              snap: true,
-              elevation: 0,
-              backgroundColor: const Color(0xFFFFF8EE),
-              title: FadeInDown(
-                duration: const Duration(milliseconds: 500),
-                child: _buildSearchBar(),
-              ),
-              actions: [
-                FadeInRight(
-                  duration: const Duration(milliseconds: 600),
-                  child: IconButton(
-                    icon: const Icon(Icons.people_outline, color: Colors.black),
-                    tooltip: 'Designers',
-                    onPressed: () {
-                      Navigator.pushNamed(context, DesignersPage.routeName);
-                    },
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // Disables back button for home
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        title: Text(
+          'Party Pal',
+          style: AppFonts.brandHeader,
+        ),
+        actions: [
+          IconButton(icon: const Icon(Icons.search), color: AppColors.textBody, onPressed: () {}),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              IconButton(icon: const Icon(Icons.notifications_none), color: AppColors.textBody, onPressed: () {}),
+              Positioned(
+                top: 10,
+                right: 12,
+                child: Container(width: 8, height: 8, decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle)),
+              )
+            ],
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
+      body: CustomScrollView(
+        slivers: [
+          // 1. Search Bar (Pinned so it doesn't scroll)
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _SliverAppBarDelegate(
+              minHeight: 60.0,
+              maxHeight: 60.0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                color: AppColors.background,
+                child: TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search, color: Colors.grey, size: 20),
+                    hintText: 'Search party designs, designers, products...',
+                    hintStyle: AppFonts.bodyText.copyWith(color: Colors.grey[400]),
+                    fillColor: Colors.white,
+                    filled: true,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide.none),
                   ),
-                ),
-                FadeInRight(
-                  duration: const Duration(milliseconds: 600),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.message_outlined,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-              ],
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(48),
-                child: FadeInDown(
-                  duration: const Duration(milliseconds: 700),
-                  child: _buildTabBar(),
                 ),
               ),
             ),
-          ];
-        },
-        body: TabBarView(
-          controller: _tabController,
-          children: [_buildHomeTab(), _buildDiscoverTab(), _buildProfileTab()],
-        ),
-      ),
-    );
-  }
+          ),
 
-  Widget _buildSearchBar() {
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+          // 2. Categories List (Scrollable)
+          SliverToBoxAdapter(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.fromLTRB(16, 8, 0, 8),
+              child: Row(
+                children: [
+                  CategoryButton(
+                    icon: Icons.brightness_1, // Replaced placeholder with simple dot
+                    label: 'All',
+                    backgroundColor: AppColors.accentPaleGreen,
+                    isSelected: true,
+                    onTap: () {},
+                  ),
+                  CategoryButton(icon: CupertinoIcons.heart, label: 'Birthdays', onTap: () {}),
+                  CategoryButton(icon: Icons.child_friendly, label: 'Baby Showers', onTap: () {}),
+                  CategoryButton(icon: Icons.favorite, label: 'Weddings', onTap: () {}),
+                  CategoryButton(icon: Icons.star_border, label: 'Other', onTap: () {}),
+                ],
+              ),
+            ),
+          ),
+
+          // 3. The Feed Posts (The main list)
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  return PartyPostCard(post: samplePosts[index]);
+                },
+                childCount: samplePosts.length, // Number of posts in our data list
+              ),
+            ),
           ),
         ],
       ),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Search events, planners...',
-          hintStyle: const TextStyle(color: Colors.grey),
-          prefixIcon: const Icon(Icons.search, color: Colors.grey),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+
+      // 4. Custom Bottom Navigation Bar
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.only(top: 8, bottom: 8),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(top: BorderSide(color: AppColors.border, width: 1)),
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          selectedItemColor: AppColors.accentGreen,
+          unselectedItemColor: Colors.grey[400],
+          currentIndex: 0,
+          onTap: (index) {
+            // Handle nav index change
+          },
+          selectedLabelStyle: AppFonts.navText,
+          unselectedLabelStyle: AppFonts.navText,
+          items: [
+            const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            const BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Explore'),
+            BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: const BoxDecoration(color: AppColors.accentGreen, shape: BoxShape.circle),
+                child: const Icon(Icons.add, color: Colors.white, size: 20),
+              ),
+              label: '',
+            ),
+            const BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: 'Messages'),
+            const BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+          ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildTabBar() {
-    return TabBar(
-      controller: _tabController,
-      indicatorColor: const Color(0xFF6A11CB),
-      indicatorWeight: 3,
-      labelColor: Colors.black,
-      unselectedLabelColor: Colors.grey,
-      tabs: const [
-        Tab(text: 'Home'),
-        Tab(text: 'Discover'),
-        Tab(text: 'Profile'),
-      ],
-    );
+// Helper class for the pinned search bar
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  @override
+  double get minExtent => minHeight;
+  @override
+  double get maxExtent => maxHeight;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox.expand(child: child);
   }
 
-  Widget _buildHomeTab() {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state is HomeLoading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is HomeLoaded) {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FadeInUp(
-                  duration: const Duration(milliseconds: 800),
-                  child: EventCard(
-                    title: "How do you want to celebrate today?",
-                    subtitle:
-                        "Mom's birthday coming up?\nPlan a gift she'll love.",
-                    buttonText: "Start Planning",
-                    onTap: () {},
-                  ),
-                ),
-                const SizedBox(height: 24),
-                FadeInUp(
-                  duration: const Duration(milliseconds: 900),
-                  delay: const Duration(milliseconds: 100),
-                  child: UpcomingEvents(
-                    events: state.events,
-                    onSort: () {
-                      context.read<HomeBloc>().add(SortEvents());
-                    },
-                  ),
-                ),
-                const SizedBox(height: 24),
-                FadeInUp(
-                  duration: const Duration(milliseconds: 1000),
-                  delay: const Duration(milliseconds: 200),
-                  child: RecentPosts(
-                    posts: state.posts,
-                    onFilter: () {
-                      context.read<HomeBloc>().add(FilterPosts());
-                    },
-                  ),
-                ),
-                const SizedBox(height: 24),
-                FadeInUp(
-                  duration: const Duration(milliseconds: 1100),
-                  delay: const Duration(milliseconds: 300),
-                  child: const PartyAssistant(),
-                ),
-              ],
-            ),
-          );
-        } else if (state is HomeError) {
-          return Center(child: Text(state.message));
-        } else {
-          return const SizedBox();
-        }
-      },
-    );
-  }
-
-  Widget _buildDiscoverTab() {
-    return const Center(
-      child: Text('Discover Tab', style: TextStyle(fontSize: 24)),
-    );
-  }
-
-  Widget _buildProfileTab() {
-    return const Center(
-      child: Text('Profile Tab', style: TextStyle(fontSize: 24)),
-    );
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight || child != oldDelegate.child;
   }
 }
