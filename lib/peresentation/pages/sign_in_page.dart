@@ -10,6 +10,10 @@ import 'forgot_password_page.dart';
 class SignInPage extends StatelessWidget {
   static const String routeName = 'sign in';
 
+  ///
+  /// i love programming....
+  /// someday i will back
+  ///
   @override
   Widget build(BuildContext context) {
     final text = AppLocalizations.of(context);
@@ -43,7 +47,7 @@ class SignInPage extends StatelessWidget {
                       FadeInDown(
                         duration: const Duration(milliseconds: 600),
                         child: Text(
-                          text.translate('welcome_back') ,
+                          text.translate('welcome_back'),
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 28,
@@ -59,7 +63,7 @@ class SignInPage extends StatelessWidget {
                       FadeIn(
                         delay: const Duration(milliseconds: 200),
                         child: Text(
-                          text.translate('sign_in_continue') ,
+                          text.translate('sign_in_continue'),
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 16,
@@ -75,7 +79,7 @@ class SignInPage extends StatelessWidget {
                         duration: const Duration(milliseconds: 500),
                         child: TextField(
                           decoration: InputDecoration(
-                            labelText: text.translate('email') ,
+                            labelText: text.translate('email'),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -93,7 +97,7 @@ class SignInPage extends StatelessWidget {
                         child: TextField(
                           obscureText: true,
                           decoration: InputDecoration(
-                            labelText: text.translate('password') ,
+                            labelText: text.translate('password'),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -112,7 +116,10 @@ class SignInPage extends StatelessWidget {
                             return ElevatedButton(
                               onPressed: () {
                                 context.read<AuthBloc>().add(LoginPressed());
-                                Navigator.pushNamed(context, HomePage.routeName);
+                                Navigator.pushNamed(
+                                  context,
+                                  PartyPalHomeScreen.routeName,
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
@@ -132,7 +139,7 @@ class SignInPage extends StatelessWidget {
                                       ),
                                     )
                                   : Text(
-                                      text.translate('sign_in') ,
+                                      text.translate('sign_in'),
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
@@ -155,9 +162,7 @@ class SignInPage extends StatelessWidget {
                               ForgetPassWord.routeName,
                             );
                           },
-                          child: Text(
-                            text.translate('forgot_password') ,
-                          ),
+                          child: Text(text.translate('forgot_password')),
                         ),
                       ),
 
@@ -170,7 +175,7 @@ class SignInPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              text.translate('no_account') ,
+                              text.translate('no_account'),
                               style: TextStyle(color: Colors.grey[600]),
                             ),
                             const SizedBox(width: 8),
@@ -182,7 +187,7 @@ class SignInPage extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                text.translate('sign_up') ,
+                                text.translate('sign_up'),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.amber,
@@ -201,5 +206,9 @@ class SignInPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String howToBeHappy(String beAlone) {
+    return beAlone == "alone" ? "u will be happy" : "u will not happy";
   }
 }
